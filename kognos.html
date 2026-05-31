@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kognos — Predictive Pest & Vector Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --soil: #2C1F0E;
+    --bark: #4A3520;
+    --moss: #3D4A2A;
+    --sage: #6B7B52;
+    --leaf: #8FA66A;
+    --dew: #B5C99A;
+    --parchment: #F5EFE0;
+    --cream: #FAF7F0;
+    --amber-warm: #C47A2E;
+    --amber-light: #E8A84E;
+    --rust: #8B3E1C;
+    --clay: #A05030;
+    --ink: #1A1510;
+    --mist: #EAE4D4;
+    --signal: #4A7C5F;
+    --signal-light: #7AB895;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(250, 247, 240, 0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(74,53,32,0.1);
+    transition: all 0.3s;
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--soil);
+    text-decoration: none;
+  }
+
+  .nav-logo span {
+    color: var(--signal);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+    align-items: center;
+  }
+
+  .nav-links a {
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--bark);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--signal); }
+
+  .nav-cta {
+    background: var(--moss) !important;
+    color: var(--dew) !important;
+    padding: 0.5rem 1.4rem !important;
+    border-radius: 2px;
+    font-weight: 500 !important;
+    transition: background 0.2s !important;
+  }
+
+  .nav-cta:hover { background: var(--soil) !important; }
+
+  /* ─── PAGE SECTIONS ─── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 4rem 4rem;
+    gap: 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 55%;
+    height: 100%;
+    background: var(--parchment);
+    z-index: 0;
+    clip-path: polygon(8% 0, 100% 0, 100% 100%, 0% 100%);
+  }
+
+  .hero-content { position: relative; z-index: 1; }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--signal);
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--signal);
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    font-weight: 500;
+    line-height: 1.1;
+    color: var(--soil);
+    margin-bottom: 1.5rem;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--signal);
+  }
+
+  .hero-sub {
+    font-size: 1rem;
+    color: var(--bark);
+    max-width: 480px;
+    margin-bottom: 2.5rem;
+    line-height: 1.8;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--moss);
+    color: var(--cream);
+    padding: 0.85rem 2rem;
+    border: none;
+    border-radius: 2px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover { background: var(--soil); transform: translateY(-1px); }
+
+  .btn-secondary {
+    color: var(--bark);
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-bottom: 1px solid var(--sage);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .btn-secondary:hover { color: var(--signal); border-color: var(--signal); }
+
+  .hero-visual {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .stat-card {
+    background: white;
+    border: 1px solid rgba(74,53,32,0.12);
+    border-radius: 4px;
+    padding: 1.4rem;
+    transition: box-shadow 0.2s;
+  }
+
+  .stat-card:hover { box-shadow: 0 4px 24px rgba(44,31,14,0.08); }
+
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.6rem;
+    font-weight: 600;
+    color: var(--soil);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+
+  .stat-number span { color: var(--signal); }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--sage);
+    letter-spacing: 0.05em;
+    line-height: 1.4;
+  }
+
+  .hero-tagline-box {
+    background: var(--moss);
+    color: var(--dew);
+    padding: 1.4rem 1.6rem;
+    border-radius: 4px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  /* ─── SECTION SHARED ─── */
+  section {
+    padding: 6rem 4rem;
+  }
+
+  .section-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--signal);
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+
+  .section-eyebrow::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 1px;
+    background: var(--signal);
+  }
+
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 500;
+    line-height: 1.15;
+    color: var(--soil);
+    margin-bottom: 1.2rem;
+  }
+
+  h2 em { font-style: italic; color: var(--signal); }
+
+  .section-intro {
+    font-size: 1rem;
+    color: var(--bark);
+    max-width: 580px;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+  }
+
+  /* ─── PROBLEM STRIP ─── */
+  .problem-strip {
+    background: var(--soil);
+    color: var(--parchment);
+    padding: 4rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .problem-item {
+    padding: 2.5rem 2rem;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .problem-item:last-child { border-right: none; }
+
+  .problem-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--amber-light);
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .problem-item h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--parchment);
+    margin-bottom: 0.8rem;
+    line-height: 1.2;
+  }
+
+  .problem-item p {
+    font-size: 0.88rem;
+    color: rgba(245,239,224,0.65);
+    line-height: 1.75;
+  }
+
+  /* ─── PRODUCT MODULES ─── */
+  .modules-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5px;
+    background: rgba(74,53,32,0.12);
+    border: 1px solid rgba(74,53,32,0.12);
+  }
+
+  .module-card {
+    background: var(--cream);
+    padding: 2.5rem;
+    transition: background 0.25s;
+    cursor: default;
+  }
+
+  .module-card:hover { background: var(--parchment); }
+
+  .module-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--parchment);
+    border: 1px solid rgba(74,53,32,0.15);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.4rem;
+    font-size: 1.2rem;
+  }
+
+  .module-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--soil);
+    margin-bottom: 0.6rem;
+  }
+
+  .module-card p {
+    font-size: 0.88rem;
+    color: var(--bark);
+    line-height: 1.75;
+    margin-bottom: 1.2rem;
+  }
+
+  .module-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(61,74,42,0.1);
+    color: var(--moss);
+    padding: 0.25rem 0.7rem;
+    border-radius: 2px;
+    font-weight: 500;
+  }
+
+  /* ─── HOW IT WORKS ─── */
+  .how-section {
+    background: var(--parchment);
+  }
+
+  .steps-timeline {
+    position: relative;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .steps-timeline::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 10px;
+    bottom: 10px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--signal), rgba(107,123,82,0.2));
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+    align-items: start;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+
+  .step.visible { opacity: 1; transform: translateX(0); }
+
+  .step-num {
+    width: 40px;
+    height: 40px;
+    background: var(--cream);
+    border: 1.5px solid var(--signal);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--signal);
+    font-weight: 500;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step-body h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--soil);
+    margin-bottom: 0.4rem;
+  }
+
+  .step-body p {
+    font-size: 0.88rem;
+    color: var(--bark);
+    line-height: 1.75;
+  }
+
+  /* ─── INDUSTRIES ─── */
+  .industries-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .industry-card {
+    border: 1px solid rgba(74,53,32,0.12);
+    border-radius: 4px;
+    padding: 2rem;
+    background: white;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .industry-card:hover {
+    border-color: var(--signal);
+    box-shadow: 0 4px 24px rgba(44,31,14,0.06);
+  }
+
+  .industry-emoji {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .industry-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--soil);
+    margin-bottom: 0.6rem;
+  }
+
+  .industry-card p {
+    font-size: 0.85rem;
+    color: var(--bark);
+    line-height: 1.75;
+  }
+
+  /* ─── FOUNDER ─── */
+  .founder-section {
+    background: var(--soil);
+    color: var(--parchment);
+    padding: 6rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .founder-portrait {
+    position: relative;
+  }
+
+  .founder-monogram {
+    width: 100%;
+    aspect-ratio: 1;
+    max-width: 320px;
+    background: var(--bark);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .founder-monogram::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    width: 60%;
+    height: 60%;
+    border: 1px solid var(--sage);
+    border-radius: 4px;
+    transform: rotate(6deg);
+  }
+
+  .founder-initials {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 6rem;
+    font-weight: 300;
+    color: var(--dew);
+    letter-spacing: -0.02em;
+    opacity: 0.6;
+    position: relative;
+    z-index: 1;
+  }
+
+  .founder-content .section-eyebrow { color: var(--amber-light); }
+  .founder-content .section-eyebrow::before { background: var(--amber-light); }
+
+  .founder-content h2 { color: var(--parchment); font-size: 2.4rem; }
+  .founder-content h2 em { color: var(--amber-light); }
+
+  .founder-bio {
+    font-size: 0.95rem;
+    color: rgba(245,239,224,0.75);
+    line-height: 1.85;
+    margin-bottom: 1.5rem;
+  }
+
+  .founder-quote {
+    border-left: 2px solid var(--amber-light);
+    padding-left: 1.5rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-style: italic;
+    color: var(--parchment);
+    line-height: 1.5;
+    margin: 2rem 0;
+  }
+
+  .founder-details {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+
+  .founder-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .founder-detail-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(245,239,224,0.4);
+  }
+
+  .founder-detail-value {
+    font-size: 0.9rem;
+    color: var(--dew);
+    font-weight: 500;
+  }
+
+  /* ─── CTA SECTION ─── */
+  .cta-section {
+    padding: 7rem 4rem;
+    text-align: center;
+    background: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: 'KOGNOS';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20vw;
+    font-weight: 600;
+    color: rgba(74,53,32,0.04);
+    white-space: nowrap;
+    pointer-events: none;
+    letter-spacing: 0.1em;
+  }
+
+  .cta-section h2 { position: relative; z-index: 1; max-width: 700px; margin: 0 auto 1.2rem; }
+  .cta-section p { position: relative; z-index: 1; color: var(--bark); margin-bottom: 2.5rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+  .cta-section .btn-primary { position: relative; z-index: 1; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--ink);
+    color: rgba(245,239,224,0.5);
+    padding: 3rem 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.8rem;
+  }
+
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--parchment);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+  }
+
+  .footer-logo span { color: var(--signal-light); }
+
+  footer p { font-size: 0.78rem; }
+
+  .footer-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .footer-links a {
+    color: rgba(245,239,224,0.4);
+    text-decoration: none;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--parchment); }
+
+  /* ─── ABOUT PAGE ─── */
+  .about-hero {
+    padding: 10rem 4rem 5rem;
+    max-width: 900px;
+  }
+
+  .about-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    padding: 0 4rem 6rem;
+    align-items: start;
+  }
+
+  .about-body h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--soil);
+    margin-bottom: 1rem;
+  }
+
+  .about-body p {
+    font-size: 0.9rem;
+    color: var(--bark);
+    line-height: 1.85;
+    margin-bottom: 1.2rem;
+  }
+
+  .values-list {
+    list-style: none;
+    margin-top: 1rem;
+  }
+
+  .values-list li {
+    padding: 0.9rem 0;
+    border-bottom: 1px solid rgba(74,53,32,0.1);
+    font-size: 0.88rem;
+    color: var(--bark);
+    display: flex;
+    gap: 0.8rem;
+    align-items: flex-start;
+  }
+
+  .values-list li::before {
+    content: '—';
+    color: var(--signal);
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  /* ─── CONTACT PAGE ─── */
+  .contact-page {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 6rem;
+  }
+
+  .contact-info {
+    padding: 6rem 4rem;
+    background: var(--parchment);
+  }
+
+  .contact-info h2 { margin-bottom: 1.2rem; }
+
+  .contact-info p {
+    color: var(--bark);
+    font-size: 0.92rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+
+  .contact-detail {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-detail-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--moss);
+    color: var(--dew);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  .contact-detail-text span {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 0.2rem;
+  }
+
+  .contact-detail-text strong {
+    font-size: 0.92rem;
+    color: var(--soil);
+    font-weight: 500;
+  }
+
+  .contact-form-area {
+    padding: 6rem 4rem;
+    background: var(--cream);
+  }
+
+  .contact-form-area h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    color: var(--soil);
+    margin-bottom: 0.5rem;
+  }
+
+  .contact-form-area > p {
+    font-size: 0.85rem;
+    color: var(--sage);
+    margin-bottom: 2rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.4rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--bark);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    border: 1px solid rgba(74,53,32,0.18);
+    border-radius: 2px;
+    padding: 0.7rem 0.9rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: var(--soil);
+    background: white;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--signal);
+  }
+
+  .form-group textarea { resize: vertical; min-height: 120px; }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  /* ─── ANIMATE IN ─── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── ORGANISM DOTS BG ─── */
+  .organism-bg {
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    pointer-events: none;
+    overflow: hidden;
+    opacity: 0.4;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.2rem; }
+    .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; }
+    .hero::before { display: none; }
+    .problem-strip { grid-template-columns: 1fr; }
+    .problem-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .modules-grid { grid-template-columns: 1fr; }
+    .industries-grid { grid-template-columns: 1fr 1fr; }
+    .founder-section { grid-template-columns: 1fr; padding: 4rem 1.5rem; }
+    section, .cta-section { padding: 4rem 1.5rem; }
+    footer { flex-direction: column; gap: 1rem; padding: 2rem 1.5rem; text-align: center; }
+    .about-body { grid-template-columns: 1fr; gap: 2rem; padding: 0 1.5rem 3rem; }
+    .about-hero { padding: 8rem 1.5rem 3rem; }
+    .contact-page { grid-template-columns: 1fr; }
+    .contact-info, .contact-form-area { padding: 3rem 1.5rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .industries-grid { grid-template-columns: 1fr; }
+    .founder-details { gap: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo" onclick="showPage('home')">kogn<span>os</span></a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('home')">Home</a></li>
+    <li><a href="#" onclick="showPage('product')">Platform</a></li>
+    <li><a href="#" onclick="showPage('about')">About</a></li>
+    <li><a href="#" onclick="showPage('contact')" class="nav-cta">Request Demo</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════════════════════════════
+  HOME PAGE
+══════════════════════════════════════════ -->
+<div id="home" class="page active">
+
+  <!-- HERO -->
+  <section class="hero" style="padding-top: 8rem;">
+    <div class="hero-content">
+      <div class="hero-eyebrow">Pest & Vector Intelligence</div>
+      <h1>The outbreak<br>you don't see<br>coming is the<br><em>costliest one.</em></h1>
+      <p class="hero-sub">Kognos delivers predictive pest and vector intelligence for the industries that can't afford to react after the fact. From crop fields to city mosquito grids — know before the damage starts.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn-primary" onclick="showPage('contact')">Request Early Access</a>
+        <a href="#" class="btn-secondary" onclick="showPage('product')">See the Platform →</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="stat-grid">
+        <div class="stat-card fade-up">
+          <div class="stat-number">40<span>%</span></div>
+          <div class="stat-label">of global crops lost to pests annually — $220B in damage</div>
+        </div>
+        <div class="stat-card fade-up" style="transition-delay: 0.1s">
+          <div class="stat-number">$0</div>
+          <div class="stat-label">dedicated predictive software exists for this gap</div>
+        </div>
+        <div class="stat-card fade-up" style="transition-delay: 0.2s">
+          <div class="stat-number">72<span>hr</span></div>
+          <div class="stat-label">earlier outbreak detection with ML-powered models</div>
+        </div>
+        <div class="stat-card fade-up" style="transition-delay: 0.3s">
+          <div class="stat-number">22<span>%</span></div>
+          <div class="stat-label">reduction in pesticide use via optimised routing</div>
+        </div>
+      </div>
+      <div class="hero-tagline-box fade-up" style="transition-delay: 0.4s">
+        "A single pest outbreak can wipe out an entire crop season. Yet the industry still runs on reactive spray calendars and gut instinct."
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM STRIP -->
+  <div class="problem-strip">
+    <div class="problem-item fade-up">
+      <span class="problem-number">01 / The Gap</span>
+      <h3>Reactive management is the default</h3>
+      <p>Agricultural and municipal pest control operates on fixed spray schedules and post-infestation reports. By the time action is taken, the damage is already economically devastating.</p>
+    </div>
+    <div class="problem-item fade-up" style="transition-delay: 0.15s">
+      <span class="problem-number">02 / The Risk</span>
+      <h3>No modern predictive software exists</h3>
+      <p>Despite advances in remote sensing, climate data, and ML — no B2B platform integrates these signals into actionable outbreak forecasts for distributors, agri-businesses, or municipalities.</p>
+    </div>
+    <div class="problem-item fade-up" style="transition-delay: 0.3s">
+      <span class="problem-number">03 / The Cost</span>
+      <h3>Resistance patterns are invisible</h3>
+      <p>Pesticide resistance is growing globally. Without tracking resistance evolution at the regional level, control efforts are not just ineffective — they accelerate the problem.</p>
+    </div>
+  </div>
+
+  <!-- MODULES PREVIEW -->
+  <section>
+    <div class="section-eyebrow">The Platform</div>
+    <h2>Four modules.<br>One <em>intelligence layer.</em></h2>
+    <p class="section-intro">Kognos integrates weather data, historical infestation records, satellite imagery, and field sensor inputs into a unified predictive engine — delivering decision-ready intelligence to your operations team.</p>
+
+    <div class="modules-grid">
+      <div class="module-card">
+        <div class="module-icon">🌾</div>
+        <h3>Outbreak Forecasting</h3>
+        <p>Predictive models trained on pest phenology, temperature gradients, crop growth stages, and historical outbreak data. Get 48–72 hour advance warning before conditions turn critical.</p>
+        <div class="module-tags">
+          <span class="tag">ML models</span>
+          <span class="tag">Climate signals</span>
+          <span class="tag">Crop phenology</span>
+        </div>
+      </div>
+      <div class="module-card">
+        <div class="module-icon">🦟</div>
+        <h3>Vector Risk Mapping</h3>
+        <p>Municipality-grade mosquito-borne disease risk maps combining standing water detection, temperature cycles, vector population surveys, and historical disease incidence data.</p>
+        <div class="module-tags">
+          <span class="tag">Disease risk</span>
+          <span class="tag">Satellite data</span>
+          <span class="tag">GIS mapping</span>
+        </div>
+      </div>
+      <div class="module-card">
+        <div class="module-icon">🗺️</div>
+        <h3>Application Routing</h3>
+        <p>AI-optimised pesticide application routes that minimise chemical use, fuel costs, and labour — while maximising treatment efficacy. Prioritise high-risk zones dynamically.</p>
+        <div class="module-tags">
+          <span class="tag">Route optimisation</span>
+          <span class="tag">Cost reduction</span>
+          <span class="tag">Compliance logs</span>
+        </div>
+      </div>
+      <div class="module-card">
+        <div class="module-icon">🧬</div>
+        <h3>Resistance Tracking</h3>
+        <p>Regional resistance pattern database built from field reports, genomic markers, and treatment outcome data. Understand which compounds are failing — before entire seasons are lost.</p>
+        <div class="module-tags">
+          <span class="tag">Resistance DB</span>
+          <span class="tag">Field reporting</span>
+          <span class="tag">Compound efficacy</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 2.5rem; text-align: center;">
+      <a href="#" class="btn-primary" onclick="showPage('product')">Explore the Full Platform</a>
+    </div>
+  </section>
+
+  <!-- INDUSTRIES -->
+  <section style="background: var(--parchment);">
+    <div class="section-eyebrow">Who We Serve</div>
+    <h2>Built for the<br>operators <em>on the ground.</em></h2>
+    <p class="section-intro">From agri-businesses managing thousands of hectares to municipal health departments protecting urban populations — Kognos scales to the complexity of your operations.</p>
+
+    <div class="industries-grid">
+      <div class="industry-card fade-up">
+        <span class="industry-emoji">🌾</span>
+        <h3>Agri-business & Farming</h3>
+        <p>Crop protection for commercial farms, cooperatives, and agri-distributors managing large acreage. Integrate with existing farm management systems.</p>
+      </div>
+      <div class="industry-card fade-up" style="transition-delay: 0.1s">
+        <span class="industry-emoji">🏙️</span>
+        <h3>Municipal Health Departments</h3>
+        <p>Vector surveillance and disease risk dashboards for city and regional governments. Evidence-based deployment of public health resources.</p>
+      </div>
+      <div class="industry-card fade-up" style="transition-delay: 0.2s">
+        <span class="industry-emoji">🧪</span>
+        <h3>Pest Control Distributors</h3>
+        <p>Operational intelligence for PCO networks — route efficiency, treatment tracking, and resistance data to optimise product mix recommendations.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOUNDER SECTION -->
+  <div class="founder-section" id="founder">
+    <div class="founder-portrait">
+      <div class="founder-monogram">
+        <div class="founder-initials">RC</div>
+      </div>
+    </div>
+    <div class="founder-content">
+      <div class="section-eyebrow">The Founder</div>
+      <h2>Built by someone<br>who <em>understands the field.</em></h2>
+
+      <blockquote class="founder-quote">
+        "Every year, farmers watch seasons collapse not because of bad weather or bad luck — but because the signal was always there. We just didn't have the tools to read it."
+      </blockquote>
+
+      <p class="founder-bio">Rishul Chanana founded Kognos to close one of agriculture and public health's most consequential blind spots: the gap between available data and actionable outbreak intelligence. With a background spanning agronomic data systems, ML engineering, and field operations, Rishul built Kognos from first-principles — starting with the question: why do we still use spray calendars when satellite data, climate models, and pest genomics all exist?</p>
+
+      <p class="founder-bio">The answer wasn't technical. It was a missing integration layer — software that speaks the language of field operators, not just data scientists. Kognos is that layer.</p>
+
+      <div class="founder-details">
+        <div class="founder-detail">
+          <span class="founder-detail-label">Role</span>
+          <span class="founder-detail-value">Founder & CEO</span>
+        </div>
+        <div class="founder-detail">
+          <span class="founder-detail-label">Focus</span>
+          <span class="founder-detail-value">Agri-tech, Public Health</span>
+        </div>
+        <div class="founder-detail">
+          <span class="founder-detail-label">Stage</span>
+          <span class="founder-detail-value">Seed / Early Pilots</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="section-eyebrow" style="justify-content: center;">Join the Early Access Programme</div>
+    <h2>Be among the first operators to deploy<br><em>predictive pest intelligence.</em></h2>
+    <p>We are onboarding select agri-businesses, municipal health departments, and pest control distributors for our pilot programme. Limited cohort.</p>
+    <a href="#" class="btn-primary" onclick="showPage('contact')">Request Early Access</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <a href="#" class="footer-logo" onclick="showPage('home')">kogn<span>os</span></a>
+    <p>© 2025 Kognos. All rights reserved.</p>
+    <ul class="footer-links">
+      <li><a href="#" onclick="showPage('product')">Platform</a></li>
+      <li><a href="#" onclick="showPage('about')">About</a></li>
+      <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+    </ul>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+  PRODUCT PAGE
+══════════════════════════════════════════ -->
+<div id="product" class="page">
+  <section style="padding: 9rem 4rem 4rem; background: var(--parchment);">
+    <div class="section-eyebrow">The Kognos Platform</div>
+    <h1 style="font-family: 'Cormorant Garamond', serif; font-size: clamp(2.4rem, 4vw, 3.6rem); font-weight: 500; line-height: 1.1; color: var(--soil); max-width: 700px;">Integrated intelligence for pest and vector operations at scale</h1>
+    <p style="max-width: 600px; color: var(--bark); margin-top: 1.5rem; line-height: 1.8; font-size: 0.95rem;">Kognos combines environmental sensing, historical outbreak data, and machine learning to deliver a complete operational intelligence platform — not another dashboard of disconnected charts.</p>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-section">
+    <div class="section-eyebrow">How It Works</div>
+    <h2>From raw signal<br>to <em>field decision.</em></h2>
+    <p class="section-intro">Kognos ingests multi-source data, runs continuous predictive models, and surfaces decision-ready outputs — all within a single operator interface.</p>
+
+    <div class="steps-timeline">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-body">
+          <h4>Data Ingestion</h4>
+          <p>Kognos pulls from weather APIs, satellite imagery (NDVI, thermal), field sensor networks, historical infestation databases, and crop management records. No manual data entry required.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-body">
+          <h4>Predictive Modelling</h4>
+          <p>LSTM and ensemble ML models trained on pest phenology, climate variables, and crop growth stages run continuously — updating outbreak probability surfaces every 6 hours.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-body">
+          <h4>Risk Surface Generation</h4>
+          <p>Geospatial risk maps overlay outbreak probability with field geometry — highlighting hotspots, tracking resistance clusters, and flagging vector breeding corridors in real time.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-body">
+          <h4>Operational Dispatch</h4>
+          <p>Optimised application routes are pushed directly to field teams — with prioritised zones, recommended compounds (resistance-aware), compliance logging, and outcome tracking built in.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">05</div>
+        <div class="step-body">
+          <h4>Feedback & Learning</h4>
+          <p>Field outcomes are captured and fed back into model training — so every season, every treated outbreak, and every resistance report makes the system sharper for your specific geography.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DETAILED MODULES -->
+  <section>
+    <div class="section-eyebrow">Platform Modules</div>
+    <h2>Every module built<br>for <em>operational reality.</em></h2>
+    <p class="section-intro">Not lab research. Not academic models. Kognos modules are designed around the actual decision cycles of field managers, PCO coordinators, and public health officials.</p>
+
+    <div style="display: flex; flex-direction: column; gap: 0;">
+      <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 0; border: 1px solid rgba(74,53,32,0.12); margin-bottom: 1.5px; background: white;">
+        <div style="background: var(--parchment); padding: 2.5rem; border-right: 1px solid rgba(74,53,32,0.12);">
+          <div style="font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--signal); margin-bottom: 0.5rem;">MODULE 01</div>
+          <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--soil); font-weight: 600;">Outbreak Forecasting</h3>
+          <div style="font-size: 0.8rem; color: var(--sage); margin-top: 0.5rem;">Agricultural</div>
+        </div>
+        <div style="padding: 2.5rem;">
+          <p style="color: var(--bark); font-size: 0.9rem; line-height: 1.8; margin-bottom: 1.2rem;">Predictive outbreak models for 40+ key agricultural pest species — including aphids, whitefly, armyworm, locust pressure, and fungal vectors like Botrytis and Fusarium. Models integrate pest development stage (degree-day accumulation), host crop phenology, neighbouring field infestation reports, and real-time climate data.</p>
+          <p style="color: var(--bark); font-size: 0.9rem; line-height: 1.8;">Output: 48–72 hour outbreak probability maps, alert thresholds calibrated to economic injury levels, and recommended intervention windows. Explainable AI features surface which signals drove the forecast — not a black box.</p>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 0; border: 1px solid rgba(74,53,32,0.12); margin-bottom: 1.5px; background: white;">
+        <div style="background: var(--parchment); padding: 2.5rem; border-right: 1px solid rgba(74,53,32,0.12);">
+          <div style="font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--signal); margin-bottom: 0.5rem;">MODULE 02</div>
+          <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--soil); font-weight: 600;">Vector Risk Mapping</h3>
+          <div style="font-size: 0.8rem; color: var(--sage); margin-top: 0.5rem;">Municipal</div>
+        </div>
+        <div style="padding: 2.5rem;">
+          <p style="color: var(--bark); font-size: 0.9rem; line-height: 1.8; margin-bottom: 1.2rem;">Disease vector risk maps for mosquito-borne pathogens (Dengue, Malaria, Zika, Chikungunya, West Nile Virus). Combines standing water detection from satellite thermal/optical data, temperature-dependent vector population models, larval survey integration, and historical disease incidence records.</p>
+          <p style="color: var(--bark); font-size: 0.9rem; line-height: 1.8;">Delivered as a GIS-native interface municipalities can layer onto existing city planning systems. Outbreak risk updates daily; fogging and larviciding priority zones are generated automatically ahead of outbreak windows.</p>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 0; border: 1px solid rgba(74,53,32,0.12); margin-bottom: 1.5px; background: white;">
+        <div style="background: var(--parchment); padding: 2.5rem; border-right: 1px solid rgba(74,53,32,0.12);">
+          <div style="font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--signal); margin-bottom: 0.5rem;">MODULE 03</div>
+          <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--soil); font-weight: 600;">Application Routing</h3>
+          <div style="font-size: 0.8rem; color: var(--sage); margin-top: 0.5rem;">Operations</div>
+        </div>
+        <div style="padding: 2.5rem;">
+          <p style="color: var(--bark); font-size: 0.9rem; line-height: 1.8; margin-bottom: 1.2rem;">Dynamic route optimisation for pesticide application teams — prioritising highest-risk zones, minimising travel time, factoring wind and temperature application windows, and preventing over-treatment of already-declining pest populations. Routes update as new field data comes in.</p>
+          <p style="color: var(--bark); font-size: 0.9rem; line-height: 1.8;">Compliance logging built in: application volumes, compound used, GPS-stamped coverage maps, and technician sign-off are captured automatically — reducing audit burden and strengthening regulatory compliance records.</p>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 0; border: 1px solid rgba(74,53,32,0.12); background: white;">
+        <div style="background: var(--parchment); padding: 2.5rem; border-right: 1px solid rgba(74,53,32,0.12);">
+          <div style="font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--signal); margin-bottom: 0.5rem;">MODULE 04</div>
+          <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--soil); font-weight: 600;">Resistance Tracking</h3>
+          <div style="font-size: 0.8rem; color: var(--sage); margin-top: 0.5rem;">Intelligence</div>
+        </div>
+        <div style="padding: 2.5rem;">
+          <p style="color: var(--bark); font-size: 0.9rem; line-height: 1.8; margin-bottom: 1.2rem;">A continuously updated regional resistance database, built from field treatment outcome reports, bioassay data submissions, and published genomic resistance markers. Identifies which active compounds are losing efficacy — and where resistance is spreading geographically.</p>
+          <p style="color: var(--bark); font-size: 0.9rem; line-height: 1.8;">Distributors receive compound efficacy scores by region, enabling smarter product recommendations. Agronomists receive IRM (Integrated Resistance Management) protocol suggestions aligned with actual regional resistance profiles.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="section-eyebrow" style="justify-content: center;">Pilot Programme Open</div>
+    <h2>See Kognos operating<br>on your <em>geography.</em></h2>
+    <p>We'll run a free 30-day risk mapping pilot on your operational area — no integration required to start.</p>
+    <a href="#" class="btn-primary" onclick="showPage('contact')">Request a Pilot</a>
+  </div>
+
+  <footer>
+    <a href="#" class="footer-logo" onclick="showPage('home')">kogn<span>os</span></a>
+    <p>© 2025 Kognos. All rights reserved.</p>
+    <ul class="footer-links">
+      <li><a href="#" onclick="showPage('home')">Home</a></li>
+      <li><a href="#" onclick="showPage('about')">About</a></li>
+      <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+    </ul>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+  ABOUT PAGE
+══════════════════════════════════════════ -->
+<div id="about" class="page">
+  <div class="about-hero">
+    <div class="section-eyebrow">About Kognos</div>
+    <h1 style="font-family: 'Cormorant Garamond', serif; font-size: clamp(2.4rem, 4vw, 3.8rem); font-weight: 500; line-height: 1.1; color: var(--soil); max-width: 700px;">The intelligence layer<br>the field has always<br><em>been missing.</em></h1>
+  </div>
+
+  <div class="about-body">
+    <div>
+      <h3>Why Kognos exists</h3>
+      <p>Pest management is one of the oldest agricultural challenges — and one of the most technologically neglected. The industry has GPS-guided tractors, precision irrigation, and yield forecasting models. But when it comes to pests, the baseline tool is still a spray calendar printed in January.</p>
+      <p>The data to do better has existed for years. Climate APIs, satellite multispectral imagery, IoT field sensors, genomic resistance databases — these are all available. What didn't exist was a B2B platform that integrated these signals into a usable operational workflow for the people actually managing pest control at scale.</p>
+      <p>That's the gap Kognos was built to close.</p>
+
+      <ul class="values-list">
+        <li>We operate in the space between raw data and field decision — not one or the other.</li>
+        <li>We build for operators first: agronomists, municipal health coordinators, PCO field managers.</li>
+        <li>We believe resistance management is a collective good — our network effect is strongest when data is shared.</li>
+        <li>We measure success in seasons saved, not dashboards launched.</li>
+      </ul>
+    </div>
+
+    <div>
+      <h3>The market context</h3>
+      <p>Pests destroy up to 40% of global crop production annually — equivalent to $220 billion in losses. Mosquito-borne disease costs emerging economies an additional $12 billion per year in public health spending and lost productivity.</p>
+      <p>The AI-based pest management market was valued at $2.5 billion in 2024 and is forecast to reach $8.4 billion by 2032. But the majority of that market is in reactive detection tools — sensors, cameras, identification apps. The predictive layer — knowing where and when before the outbreak — remains largely unaddressed.</p>
+      <p>Kognos is positioned at the predictive edge of this market: not detection, but prevention. Not monitoring, but forecasting. This is a greenfield B2B SaaS category with no dominant player.</p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem;">
+        <div style="background: var(--parchment); padding: 1.4rem; border-radius: 4px; border-left: 3px solid var(--signal);">
+          <div style="font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 600; color: var(--soil);">$8.4B</div>
+          <div style="font-size: 0.78rem; color: var(--sage); margin-top: 0.2rem;">Market by 2032 (16% CAGR)</div>
+        </div>
+        <div style="background: var(--parchment); padding: 1.4rem; border-radius: 4px; border-left: 3px solid var(--amber-warm);">
+          <div style="font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 600; color: var(--soil);">63M</div>
+          <div style="font-size: 0.78rem; color: var(--sage); margin-top: 0.2rem;">SME agri-distributors in India alone</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOUNDER SECTION (same as home) -->
+  <div class="founder-section">
+    <div class="founder-portrait">
+      <div class="founder-monogram">
+        <div class="founder-initials">RC</div>
+      </div>
+    </div>
+    <div class="founder-content">
+      <div class="section-eyebrow">Founder</div>
+      <h2>Rishul <em>Chanana</em></h2>
+
+      <blockquote class="founder-quote">
+        "The problem isn't a lack of data. It's a lack of integration — someone had to build the layer that turns signals into decisions that operators can actually act on."
+      </blockquote>
+
+      <p class="founder-bio">Rishul Chanana is the founder and CEO of Kognos. His work sits at the intersection of machine learning, field operations, and B2B data infrastructure. Kognos emerged from a direct observation: every piece of data needed to prevent pest outbreaks exists — in weather APIs, satellite providers, academic resistance databases — but no commercial software had assembled them into a coherent operating tool for the industries that need it most.</p>
+
+      <p class="founder-bio">Rishul brings a builder's mindset to a domain that has long been underserved by technology. Kognos is being built from first principles — technical, operational, and commercial — with the goal of becoming the intelligence layer the pest and vector control industry doesn't yet know it needs.</p>
+
+      <div class="founder-details">
+        <div class="founder-detail">
+          <span class="founder-detail-label">Company</span>
+          <span class="founder-detail-value">Kognos</span>
+        </div>
+        <div class="founder-detail">
+          <span class="founder-detail-label">Stage</span>
+          <span class="founder-detail-value">Early Pilots</span>
+        </div>
+        <div class="founder-detail">
+          <span class="founder-detail-label">Domain</span>
+          <span class="founder-detail-value">Agri-tech / Public Health</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <a href="#" class="footer-logo" onclick="showPage('home')">kogn<span>os</span></a>
+    <p>© 2025 Kognos. All rights reserved.</p>
+    <ul class="footer-links">
+      <li><a href="#" onclick="showPage('home')">Home</a></li>
+      <li><a href="#" onclick="showPage('product')">Platform</a></li>
+      <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+    </ul>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+  CONTACT PAGE
+══════════════════════════════════════════ -->
+<div id="contact" class="page">
+  <div class="contact-page">
+    <div class="contact-info">
+      <div class="section-eyebrow">Get in Touch</div>
+      <h2>Work with<br><em>Kognos.</em></h2>
+      <p>We're onboarding a limited cohort of early pilot partners — agri-businesses, municipal departments, and pest control distributors who want to see predictive intelligence operating in their geography before we open broadly.</p>
+      <p>Whether you want a product demo, a pilot scoping call, or to discuss a research partnership — reach us here.</p>
+
+      <div class="contact-detail">
+        <div class="contact-detail-icon">✉</div>
+        <div class="contact-detail-text">
+          <span>Email</span>
+          <strong>hello@kognos.ai</strong>
+        </div>
+      </div>
+
+      <div class="contact-detail">
+        <div class="contact-detail-icon">📍</div>
+        <div class="contact-detail-text">
+          <span>Headquarters</span>
+          <strong>India — serving global markets</strong>
+        </div>
+      </div>
+
+      <div class="contact-detail">
+        <div class="contact-detail-icon">🌱</div>
+        <div class="contact-detail-text">
+          <span>Stage</span>
+          <strong>Seed / Pilot Programme</strong>
+        </div>
+      </div>
+
+      <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(74,53,32,0.12);">
+        <p style="font-size: 0.8rem; color: var(--sage); line-height: 1.8;">Kognos is currently focused on agricultural pest control and municipal vector management in South and Southeast Asia, with expansion into Sub-Saharan Africa and South America planned for 2026.</p>
+      </div>
+    </div>
+
+    <div class="contact-form-area">
+      <h3>Request Early Access</h3>
+      <p>Tell us about your operations and we'll follow up within 48 hours.</p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="Rishul">
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Chanana">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Organisation</label>
+        <input type="text" placeholder="Your company or agency">
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="you@company.com">
+      </div>
+
+      <div class="form-group">
+        <label>You are a...</label>
+        <select>
+          <option value="">Select your organisation type</option>
+          <option>Agricultural Business / Farm</option>
+          <option>Pest Control Operator / Distributor</option>
+          <option>Municipal Health Department</option>
+          <option>NGO / Public Health Organisation</option>
+          <option>Investor / Accelerator</option>
+          <option>Researcher / Academic</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Operating Geography</label>
+        <input type="text" placeholder="Country / Region / City">
+      </div>
+
+      <div class="form-group">
+        <label>Tell us about your current challenge</label>
+        <textarea placeholder="Describe your pest or vector management operations and what you're hoping Kognos can help with..."></textarea>
+      </div>
+
+      <button class="btn-primary" onclick="handleFormSubmit()" style="width: 100%; justify-content: center; padding: 1rem; font-size: 0.88rem;">Submit Request →</button>
+
+      <div id="form-success" style="display: none; margin-top: 1.5rem; padding: 1rem 1.2rem; background: rgba(61,74,42,0.08); border-left: 3px solid var(--signal); border-radius: 2px;">
+        <p style="font-size: 0.88rem; color: var(--moss); font-weight: 500;">✓ Request received. We'll be in touch within 48 hours.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <a href="#" class="footer-logo" onclick="showPage('home')">kogn<span>os</span></a>
+    <p>© 2025 Kognos. All rights reserved.</p>
+    <ul class="footer-links">
+      <li><a href="#" onclick="showPage('home')">Home</a></li>
+      <li><a href="#" onclick="showPage('product')">Platform</a></li>
+      <li><a href="#" onclick="showPage('about')">About</a></li>
+    </ul>
+  </footer>
+</div>
+
+<script>
+  function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(initAnimations, 100);
+    return false;
+  }
+
+  function initAnimations() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-up, .step').forEach(el => {
+      observer.observe(el);
+    });
+  }
+
+  function handleFormSubmit() {
+    document.getElementById('form-success').style.display = 'block';
+    document.getElementById('form-success').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initAnimations();
+  });
+</script>
+</body>
+</html>
